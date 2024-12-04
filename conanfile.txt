@@ -1,0 +1,9 @@
+[requires]
+catch2/3.7.0
+cli11/2.4.2
+
+[layout]
+cmake_layout
+
+[generators]
+CMakeDeps

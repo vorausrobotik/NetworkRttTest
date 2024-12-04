@@ -1,0 +1,21 @@
+FROM debian:trixie-slim AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake git python3 pipx ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pipx install conan==2.25 && \
+    pipx inject conan setuptools_scm && \
+    pipx ensurepath
+ENV PATH="/root/.local/bin:${PATH}"
+
+COPY . /workspace
+WORKDIR /workspace
+
+RUN cmake -S . -B build \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=external/conan_provider.cmake \
+    && cmake --build build --target NetworkRttTest -j"$(nproc)"
+
+FROM debian:trixie-slim
+COPY --from=builder /workspace/build/src/NetworkRttTest /usr/local/bin/NetworkRttTest

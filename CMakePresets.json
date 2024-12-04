@@ -1,0 +1,56 @@
+ {
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "base",
+      "description": "Shared build options (e.g. needed for dependency management",
+      "cacheVariables": {
+        
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "external/conan_provider.cmake"
+        
+      }
+    },
+    {
+      "name": "debug-sanitizer",
+      "displayName": "Debug build with sanitizer",
+      "description": "Debug build with ASAN and UBSAN. Use this for local development",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ASAN": "ON",
+        "UBSAN": "ON"
+      }
+    },
+    {
+      "name": "debug-sanitizer-coverage",
+      "displayName": "Debug build with sanitizer and Coverage",
+      "description": "Debug build with enabled ASAN, UBSAN and coverage",
+      "inherits": "base",
+     "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ASAN": "ON",
+        "UBSAN": "ON",
+        "COVERAGE": "ON"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Plain release build",
+      "description": "Plain release build",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "release-sanitizer",
+      "displayName": "Release build with sanitizer",
+      "description": "Release build with TSAN.",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "TSAN": "ON"
+      }
+    }
+  ]
+}

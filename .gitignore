@@ -1,0 +1,12 @@
+venv
+build
+cmake-build*
+build-*
+pipe-*
+reports
+.cache
+.conan-cache
+.env
+.jfrog
+compile_commands.json
+doc/*

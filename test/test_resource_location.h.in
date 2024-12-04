@@ -1,0 +1,9 @@
+#pragma once
+
+#cmakedefine TEST_RESOURCE_LOCATION_DEFAULT "@TEST_RESOURCE_LOCATION_DEFAULT@"
+
+#include <filesystem>
+
+// The test resource location path can be changed at runtime if needed
+// e.g. by reading an environment variable in the main function of the test runner
+inline std::filesystem::path TEST_RESOURCE_LOCATION = std::filesystem::path(TEST_RESOURCE_LOCATION_DEFAULT); // NOLINT

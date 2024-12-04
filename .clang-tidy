@@ -1,0 +1,20 @@
+---
+Checks: 'clang-diagnostic-*,
+  clang-analyzer-*,
+  readability-*,
+  performance-*,
+  bugprone-*,
+  concurrency-*,
+  -modernize-use-nodiscard'
+HeaderFilterRegex: '.*'
+WarningsAsErrors: '*'
+FormatStyle: file
+CheckOptions:
+  readability-identifier-naming.GlobalConstantCase: UPPER_CASE
+  readability-identifier-naming.ParameterCase: camelBack
+  readability-identifier-naming.VariableCase: camelBack
+  readability-identifier-naming.FunctionCase: camelBack
+  readability-identifier-naming.ClassMemberCase: camelBack
+  readability-identifier-naming.ClassCase: CamelCase
+  readability-identifier-naming.PrivateMemberSuffix: _
+  readability-identifier-naming.PrivateMethodSuffix: _

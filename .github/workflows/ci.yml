@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["*"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Same toolchain as the development Dockerfile (debian trixie: gcc 14, clang-tidy/clang-format 19, cmake 3.31).
+env:
+  CONAN_VERSION: "2.25"
+
+jobs:
+  format:
+    name: clang-format
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Install tools
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            clang-format git python3 ca-certificates
+      - uses: actions/checkout@v4
+      - name: Check formatting
+        run: ./pipe.py check_format
+
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Debug (ASAN, UBSAN, coverage, clang-tidy)
+            preset: debug
+            stages: build_debug test_unit coverage lint
+          - name: Release
+            preset: release
+            stages: build_release
+    env:
+      # Keep the conan cache inside the workspace so it can be cached between runs.
+      CONAN_HOME: ${{ github.workspace }}/.conan-cache
+    steps:
+      - name: Install tools
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            build-essential cmake git ca-certificates \
+            python3 python3-venv python-is-python3 \
+            clang-tidy gcovr
+          python3 -m venv /opt/conan
+          /opt/conan/bin/pip install --no-cache-dir "conan==${CONAN_VERSION}" setuptools_scm
+          echo "/opt/conan/bin" >> "$GITHUB_PATH"
+
+      - uses: actions/checkout@v4
+
+      - name: Cache conan packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CONAN_HOME }}
+          key: conan-${{ runner.os }}-${{ matrix.preset }}-${{ hashFiles('conanfile.txt', 'external/conan_provider.cmake') }}
+          restore-keys: |
+            conan-${{ runner.os }}-${{ matrix.preset }}-
+
+      - name: Configure
+        run: ./pipe.py configure_${{ matrix.preset }}
+
+      - name: Build, test, lint
+        run: |
+          mkdir -p reports
+          ./pipe.py ${{ matrix.stages }}
+
+      - name: Upload reports
+        if: always() && matrix.preset == 'debug'
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: reports/
+          if-no-files-found: ignore
+
+  docker-prod:
+    name: Dockerfile.prod builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build production image
+        run: docker build --pull --file Dockerfile.prod --tag network-rtt-test:ci .
+      - name: simple test
+        run: docker run --rm network-rtt-test:ci NetworkRttTest --help
