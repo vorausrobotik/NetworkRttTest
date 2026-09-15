@@ -27,7 +27,12 @@ Useful options (see `--help` for all):
 - `-p, --priority`: SCHED_FIFO priority of the benchmark thread, `-1` for SCHED_OTHER
 - `--cpu-affinity`: pin the benchmark thread to this CPU
 - `-m, --lock-memory` / `-s, --prevent-sleep-states`: typical real-time tuning
-- `-r, --results-path`: directory for the result files, defaults to the working directory
+- `-r, --results-path`: directory for the result files, defaults to `results` in the working directory
+- `--create-results-subdir`: create a timestamped subdirectory inside the results path for each run
+
+The results directory is created if it does not exist. To avoid overwriting previous results, the benchmark aborts
+if the directory is not empty. Either pass a different `--results-path`, clear the directory, or use
+`--create-results-subdir 1` to get a new subdirectory per run.
 
 Statistics are printed to the console while the benchmark runs. Stop it with Ctrl+C.
 

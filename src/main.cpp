@@ -48,10 +48,12 @@ void configureCli(CLI::App& app, Options& options)
     app.add_option("--cpu-affinity", options.cpuAffinity,
                    "Set CPU affinity of the benchmark thread to this cpu, -1 means no affinity");
     app.add_option("-r,--results-path", options.resultsPath,
-                   "Write benchmark results and logs to this directory, use working directory if no path is passed.");
-    app.add_option("--create-results-subdir", options.createResultsSubdirectory,
-                   "Create a new subdirectory in the results path for each run, named with date and time, to avoid "
-                   "overwriting previous results.");
+                   "Write benchmark results to this directory. It is created if it does not exist and must be empty "
+                   "unless --create-results-subdir is used.");
+    app.add_option(
+        "--create-results-subdir", options.createResultsSubdirectory,
+        "Create a new subdirectory in the results path for each run, named with date and time, to avoid "
+        "overwriting previous results. Without this, the benchmark aborts if the results path is not empty.");
     app.add_option("-f,--stats-frequency", options.statsFrequency,
                    "Duration to wait between printing stats to the console. Supports the suffixed ms, s, m, h for "
                    "milliseconds, seconds, minutes and hours. "
@@ -72,9 +74,9 @@ void prepareResultsPath(Options& options)
 
     if (!std::filesystem::is_empty(options.resultsPath))
     {
-        throw std::runtime_error(
-            "Results directory is not empty, aborting to avoid overwriting previous results. "
-            "Use --create-results-subdirectory to create a new subdirectory for each run.");
+        throw std::runtime_error("Results directory '" + options.resultsPath.string() +
+                                 "' is not empty, aborting to avoid overwriting previous results. "
+                                 "Use --create-results-subdir to create a new subdirectory for each run.");
     }
 }
 
