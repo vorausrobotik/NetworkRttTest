@@ -47,18 +47,15 @@ RSock::RSock(const std::string& interface)
             throw std::system_error(errno, std::system_category(), "Couldn't get interface index");
         }
 
-        // get current options
-        struct ifreq ifopts = makeIfreq(interface);
-        if (ioctl(socket_, SIOCGIFFLAGS, &ifopts) < 0)
+        // enable promiscuous mode
+        // Unlike setting IFF_PROMISC via SIOCSIFFLAGS, this membership is reference counted by the kernel and
+        // automatically dropped when the socket is closed
+        packet_mreq promiscMembership{};
+        promiscMembership.mr_ifindex = ifidx.ifr_ifindex;
+        promiscMembership.mr_type = PACKET_MR_PROMISC;
+        if (setsockopt(socket_, SOL_PACKET, PACKET_ADD_MEMBERSHIP, &promiscMembership, sizeof(promiscMembership)) < 0)
         {
-            throw std::system_error(errno, std::system_category(), "ioctl failed");
-        }
-
-        // set promiscuous mode
-        ifopts.ifr_flags |= IFF_PROMISC;
-        if (ioctl(socket_, SIOCSIFFLAGS, &ifopts) < 0)
-        {
-            throw std::system_error(errno, std::system_category(), "Failed to set promiscuous mode");
+            throw std::system_error(errno, std::system_category(), "Failed to enable promiscuous mode");
         }
 
         // bind socket
