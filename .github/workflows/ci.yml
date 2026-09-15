@@ -30,7 +30,7 @@ jobs:
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
             clang-format git python3 ca-certificates
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check formatting
         run: ./pipe.py check_format
 
@@ -63,10 +63,10 @@ jobs:
           /opt/conan/bin/pip install --no-cache-dir "conan==${CONAN_VERSION}" setuptools_scm
           echo "/opt/conan/bin" >> "$GITHUB_PATH"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Cache conan packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ env.CONAN_HOME }}
           key: conan-${{ runner.os }}-${{ matrix.preset }}-${{ hashFiles('conanfile.txt', 'external/conan_provider.cmake') }}
@@ -83,7 +83,7 @@ jobs:
 
       - name: Upload reports
         if: always() && matrix.preset == 'debug'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: reports
           path: reports/
@@ -93,7 +93,7 @@ jobs:
     name: Dockerfile.prod builds
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build production image
         run: docker build --pull --file Dockerfile.prod --tag network-rtt-test:ci .
       - name: simple test
