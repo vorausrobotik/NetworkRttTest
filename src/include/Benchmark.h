@@ -1,3 +1,4 @@
+#pragma once
 #include <RTUtils/CycleControl.h>
 #include <RTUtils/RtBenchmark.h>
 #include <algorithm>
