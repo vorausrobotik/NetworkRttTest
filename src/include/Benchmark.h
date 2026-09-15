@@ -208,8 +208,8 @@ struct Benchmark
     void updateStats_(Statistics& stats)
     {
         using namespace std::chrono_literals;
-        auto rttHist = roundTripMeasurement_.getHistogram();
-        auto jitterHist = jitterMeasurement_.getHistogram();
+        const auto& rttHist = roundTripMeasurement_.getHistogram();
+        const auto& jitterHist = jitterMeasurement_.getHistogram();
 
         stats.maxRtt = detail::toMicroseconds(rttHist.max().value_or(0ns));
         stats.avgRtt = static_cast<float>(detail::toMicroseconds(rttHist.avg().value_or(0ns)));
