@@ -180,10 +180,6 @@ int main(int argc, char** argv)  // NOLINT(*-exception-escape)
     try
     {
         std::cout << "NetworkRttTest\n";
-        prepareResultsPath(options);
-
-        printOptions(options, std::cout);
-        writeOptionsToJson(options, options.resultsPath / "used_options.json");
 
         auto statsFrequency = parseStatsFrequency(options.statsFrequency);
 
@@ -191,6 +187,10 @@ int main(int argc, char** argv)  // NOLINT(*-exception-escape)
 
         RSock driver(options.interface);
         driver.setReceiveTimeout(options.cycletime);
+
+        prepareResultsPath(options);
+        printOptions(options, std::cout);
+        writeOptionsToJson(options, options.resultsPath / "used_options.json");
 
         installSignalHandlers();
 
