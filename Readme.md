@@ -4,13 +4,13 @@ It can be used to answer whether a system is real-time capable enough, to be use
 At the moment, a EtherCAT device is needed as a loopback device.
 
 ## Basic procedure
-A single Ethernet frame is sent repeatedly with a given cycletime. 
+A single Ethernet frame is sent repeatedly with a given cycletime.
 The testframe contains an EtherCAT command that reads the timestamp of the first device, when the packet arrives at the slave (register 0x910).
 The time until the response arrives is measured (round trip time (rtt)) and recorded in a histogram.
 
-The cycle of the benchmark is synchronized to the slave time in such a way, that this timestamp should be as close as possible to time % cycletime. 
+The cycle of the benchmark is synchronized to the slave time in such a way, that this timestamp should be as close as possible to time % cycletime.
 This is done by shorten or lengthen the cycle slightly with a PI regulator, similar to a PLL.
-The error is also recorded in a histogram. 
+The error is also recorded in a histogram.
 This should get rid of "predictable" kind of shifts and leaves only the non-static jitter as an error.
 
 # Usage
@@ -41,10 +41,10 @@ The runtime of the general operations are measured and then stored in a histogra
 The following benchmarks exists:
 
 ## send / send.json
-The duration of the send syscall. This should be somewhat close to zero (the socket is non-blocking). 
+The duration of the send syscall. This should be somewhat close to zero.
 
 ## delta / jitter_at_ecat_device.json
-The difference between planned arrival of the frame at the slave and actual arrival. 
+The difference between planned arrival of the frame at the slave and actual arrival.
 The values here somewhat reflect the frame jitter including the OS and hardware parts.
 The average of this histogram should be very close to zero as this is what the regulator regulates.
 

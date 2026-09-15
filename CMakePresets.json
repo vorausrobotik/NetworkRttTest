@@ -5,9 +5,9 @@
       "name": "base",
       "description": "Shared build options (e.g. needed for dependency management",
       "cacheVariables": {
-        
+
         "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "external/conan_provider.cmake"
-        
+
       }
     },
     {

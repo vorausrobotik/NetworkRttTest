@@ -12,4 +12,3 @@ target_link_libraries(${PROJECT_NAME}_lib PUBLIC voraus-rt-utils::core CLI11::CL
 
 add_executable(NetworkRttTest main.cpp)
 target_link_libraries(NetworkRttTest PRIVATE ${PROJECT_NAME}::lib)
-

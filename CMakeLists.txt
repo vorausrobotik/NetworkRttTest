@@ -64,13 +64,10 @@ add_compile_options("-Wall" "-Wpedantic" "-Wextra" "-Werror")
 # actual source
 
 # enable compile commands at this point to only get our own stuff checked by static analysis tools
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON) 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(src)
 
 enable_testing()
 add_subdirectory(test)
 ########################################################################################################################
-
-
-

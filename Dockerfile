@@ -27,4 +27,3 @@ RUN pipx install conan==2.25 && \
     pipx inject conan setuptools_scm && \
     pipx ensurepath
 ENV PATH="/home/builder/.local/bin:${PATH}"
-
