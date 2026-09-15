@@ -1,9 +1,7 @@
 #pragma once
 #include <linux/if_ether.h>
-#include <cstddef>
 #include <cstdint>
 
-constexpr size_t TEST_FRAME_SIZE = 1200;
 constexpr uint16_t ETHERCAT_ETHERTYPE = 0x88A4;
 
 struct FrameHeader
