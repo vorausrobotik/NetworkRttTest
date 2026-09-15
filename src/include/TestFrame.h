@@ -2,6 +2,9 @@
 #include <linux/if_ether.h>
 #include <cstdint>
 
+namespace vr::NetworkRttTest
+{
+
 constexpr uint16_t ETHERCAT_ETHERTYPE = 0x88A4;
 
 struct FrameHeader
@@ -49,3 +52,5 @@ struct ReadSlaveTimeFrame
     uint64_t timestamp{};
     uint16_t wkc{};
 } __attribute__((packed));
+
+}  // namespace vr::NetworkRttTest

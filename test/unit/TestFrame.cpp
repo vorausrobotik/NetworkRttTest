@@ -3,6 +3,8 @@
 
 #include "TestFrame.h"
 
+using namespace vr::NetworkRttTest;
+
 TEST_CASE("Test frame")
 {
     TestFrame frame;

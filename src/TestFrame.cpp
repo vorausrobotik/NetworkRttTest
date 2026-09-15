@@ -5,6 +5,9 @@
 
 // NOLINTBEGIN(*-magic-numbers)
 
+namespace vr::NetworkRttTest
+{
+
 void setValidEthernetHeader(ethhdr& header)
 {
     // use a valid src mac address, use broadcast as destination mac
@@ -43,5 +46,7 @@ ReadSlaveTimeFrame::ReadSlaveTimeFrame()
     datagramHeader.address2 = 0x910;  // time
     datagramHeader.length = 8;        // read 8 bytes
 }
+
+}  // namespace vr::NetworkRttTest
 
 // NOLINTEND(*-magic-numbers)

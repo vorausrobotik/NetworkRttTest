@@ -15,13 +15,13 @@
 #include "Options.h"
 #include "TestFrame.h"
 
+namespace vr::NetworkRttTest
+{
+
 constexpr size_t MTU = 1520;
 constexpr unsigned int WARMUP_CYCLES = 1000;
 constexpr unsigned int ERROR_COUNT_INCREMENT = 5;
 constexpr unsigned int MAX_ERROR_COUNT = ERROR_COUNT_INCREMENT * 100;
-
-namespace vr::NetworkRttTest
-{
 
 namespace detail
 {
