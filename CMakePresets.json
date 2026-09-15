@@ -1,13 +1,11 @@
- {
+{
   "version": 6,
   "configurePresets": [
     {
       "name": "base",
-      "description": "Shared build options (e.g. needed for dependency management",
+      "description": "Shared build options (e.g. needed for dependency management)",
       "cacheVariables": {
-
         "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "external/conan_provider.cmake"
-
       }
     },
     {
@@ -26,7 +24,7 @@
       "displayName": "Debug build with sanitizer and Coverage",
       "description": "Debug build with enabled ASAN, UBSAN and coverage",
       "inherits": "base",
-     "cacheVariables": {
+      "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "ASAN": "ON",
         "UBSAN": "ON",
