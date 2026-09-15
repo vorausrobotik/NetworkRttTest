@@ -11,6 +11,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# The workflow only reads the repository; the automatic GITHUB_TOKEN gets no write access.
+permissions:
+  contents: read
+
 # Same toolchain as the development Dockerfile (debian trixie: gcc 14, clang-tidy/clang-format 19, cmake 3.31).
 env:
   CONAN_VERSION: "2.25"
